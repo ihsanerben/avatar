@@ -30,7 +30,12 @@ public class FileController {
         if (txnId == null || txnId.isEmpty()) {
             throw new TxnIdNotFoundException();
         }
+
         String username = AuthUtil.getCurrentUsername();
+
+        if(username.equals("ihsan")){
+            System.out.println("noluyoruz lan");
+        }
 
         loggerService.info(txnId, "[username: " + username + "] [CONTROLLER] getFileByUsername() başladı");
         FilePhotoDTO DTOfile = new FilePhotoDTO();
