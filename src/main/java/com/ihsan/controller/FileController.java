@@ -50,6 +50,7 @@ public class FileController {
         if (txnId == null || txnId.isEmpty()) {
             throw new TxnIdNotFoundException();
         }
+        
         String username = AuthUtil.getCurrentUsername();
         FileEntity fileEntity = fileService.getFileByUsername(username, txnId);
         Long fileId = fileEntity.getId();
