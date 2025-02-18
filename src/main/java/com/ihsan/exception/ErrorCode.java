@@ -2,7 +2,7 @@ package com.ihsan.exception;
 
 public enum ErrorCode {
     UNSUPPORTED_FILE_TYPE(111, "file type sikinti."),
-    FILE_SIZE_EXCEEDED(222, "file size cok buyuk (5mb)."),
+    FILE_SIZE_EXCEEDED(222, "file size cok buyuk kardesim sunu biraz dusur(5mb)."),
     FILE_NOT_FOUND(333, "dosya bulunamadi."),
     INTERNAL_SERVER_ERROR(444, "genel bi hata oldu."),
     USER_NOT_FOUND(555, "user bulunamadi."),

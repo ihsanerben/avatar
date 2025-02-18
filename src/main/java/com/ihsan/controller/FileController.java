@@ -92,6 +92,25 @@ public class FileController {
         return ResponseEntity.ok("FileID: " + fileId + " deleted successfully.");
     }
 
+    @PutMapping("/updateFile")
+    public ResponseEntity<FileProcessEntity> updateFile(@RequestParam("file") MultipartFile file,
+                                                        @RequestHeader(value = "TxnId") String txnId) throws IOException {
+        if (txnId == null || txnId.isEmpty()) {
+            throw new TxnIdNotFoundException();
+        }
+        String username = AuthUtil.getCurrentUsername();
+
+        loggerService.info(txnId, "[username: " + username + "] [CONTROLLER] updateFile() başladı - username: " + username);
+        FileEntity fileEntity = fileService.updateFile(username, file, txnId);
+        loggerService.info(txnId, "[username: " + username + "] [CONTROLLER] updateFile() tamamlandı - username: " + username);
+
+        FileProcessEntity processEntity = new FileProcessEntity();
+        processEntity.setFile(fileEntity);
+        processEntity.setProcess("File update işlemi başarılı. Kullanıcının yeni file bilgileri..");
+
+        return ResponseEntity.ok(processEntity);
+    }
+
     @PostMapping("/uploadFile")
     public ResponseEntity<FileProcessEntity> uploadFile(@RequestParam("file") MultipartFile file,
                                                         @RequestHeader(value = "TxnId") String txnId) throws IOException {
@@ -115,22 +134,5 @@ public class FileController {
         return ResponseEntity.ok(processEntity);
     }
 
-    @PutMapping("/updateFile")
-    public ResponseEntity<FileProcessEntity> updateFile(@RequestParam("file") MultipartFile file,
-                                             @RequestHeader(value = "TxnId") String txnId) throws IOException {
-        if (txnId == null || txnId.isEmpty()) {
-            throw new TxnIdNotFoundException();
-        }
-        String username = AuthUtil.getCurrentUsername();
 
-        loggerService.info(txnId, "[username: " + username + "] [CONTROLLER] updateFile() başladı - username: " + username);
-        FileEntity fileEntity = fileService.updateFile(username, file, txnId);
-        loggerService.info(txnId, "[username: " + username + "] [CONTROLLER] updateFile() tamamlandı - username: " + username);
-
-        FileProcessEntity processEntity = new FileProcessEntity();
-        processEntity.setFile(fileEntity);
-        processEntity.setProcess("File update işlemi başarılı. Kullanıcının yeni file bilgileri..");
-
-        return ResponseEntity.ok(processEntity);
-    }
 }
