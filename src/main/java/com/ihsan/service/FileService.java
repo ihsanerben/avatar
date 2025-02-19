@@ -50,10 +50,12 @@ public class FileService {
                 break;
             }
         }
+        
+        String username1 = AuthUtil.getCurrentUsername();
 
         // Dosya bulunamazsa hata fırlat
         if (theFileEntity == null) {
-            loggerService.error(txnId, "[username: " + AuthUtil.getCurrentUsername() + "] [ERROR][DB] getFileByUsername() -> Bu kullanıcının dosyası yok - username: " + username);
+            loggerService.error(txnId, "[username: " + username1 + "] [ERROR][DB] getFileByUsername() -> Bu kullanıcının dosyası yok - username: " + username);
             throw new FileNotFoundException();
         }
         return theFileEntity;
@@ -63,8 +65,11 @@ public class FileService {
         loggerService.info(txnId, "[username: " + AuthUtil.getCurrentUsername() + "] [SERVICE] getFile() Dosya önce rediste aranacak, yoksa DB'de aranacak. fileId: " + fileId);
         // Önce Redis’ten almayı dene
         FileEntity cachedFile = cacheService.get("file", fileId, FileEntity.class, txnId);
+
+        String username = AuthUtil.getCurrentUsername();
+
         if (cachedFile != null) {
-            loggerService.info(txnId, "[username: " + AuthUtil.getCurrentUsername() + "] [CACHE] Dosya Redis’ten alındı: " + cachedFile.getFileName());
+            loggerService.info(txnId, "[username: " + username + "] [CACHE] Dosya Redis’ten alındı: " + cachedFile.getFileName());
             return cachedFile;
         }
 
