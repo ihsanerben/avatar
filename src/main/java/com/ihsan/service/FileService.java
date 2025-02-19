@@ -50,10 +50,11 @@ public class FileService {
                 break;
             }
         }
+        String username1 = AuthUtil.getCurrentUsername();
 
         // Dosya bulunamazsa hata fırlat
         if (theFileEntity == null) {
-            loggerService.error(txnId, "[username: " + AuthUtil.getCurrentUsername() + "] [ERROR][DB] getFileByUsername() -> Bu kullanıcının dosyası yok - username: " + username);
+            loggerService.error(txnId, "[username: " + username1 + "] [ERROR][DB] getFileByUsername() -> Bu kullanıcının dosyası yok - username: " + username);
             throw new FileNotFoundException();
         }
         return theFileEntity;
