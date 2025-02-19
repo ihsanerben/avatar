@@ -63,8 +63,11 @@ public class FileService {
         loggerService.info(txnId, "[username: " + AuthUtil.getCurrentUsername() + "] [SERVICE] getFile() Dosya önce rediste aranacak, yoksa DB'de aranacak. fileId: " + fileId);
         // Önce Redis’ten almayı dene
         FileEntity cachedFile = cacheService.get("file", fileId, FileEntity.class, txnId);
+
+        String username = AuthUtil.getCurrentUsername();
+
         if (cachedFile != null) {
-            loggerService.info(txnId, "[username: " + AuthUtil.getCurrentUsername() + "] [CACHE] Dosya Redis’ten alındı: " + cachedFile.getFileName());
+            loggerService.info(txnId, "[username: " + username + "] [CACHE] Dosya Redis’ten alındı: " + cachedFile.getFileName());
             return cachedFile;
         }
 
